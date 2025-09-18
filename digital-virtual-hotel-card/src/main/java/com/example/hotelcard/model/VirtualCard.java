@@ -14,7 +14,7 @@ import java.util.List;
 public class VirtualCard {
 
     @Id
-    private String sessionId;  // Primary key
+    private String sessionId; // Primary key
 
     private String userId;
 
@@ -25,4 +25,15 @@ public class VirtualCard {
     @CollectionTable(name = "card_amenities", joinColumns = @JoinColumn(name = "session_id"))
     @Column(name = "amenity")
     private List<String> amenitiesAllowed;
+
+    @Column(nullable = true)
+    private Boolean suspended = false;
+
+    public Boolean getSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(Boolean suspended) {
+        this.suspended = suspended;
+    }
 }
