@@ -75,6 +75,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- ZXing core library: provides classes for encoding/decoding barcodes and QR codes -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
+        <!-- ZXing Java SE library: allows converting QR code data into images (PNG, JPG, etc.) -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
     </dependencies>
 <build>
     <plugins>
