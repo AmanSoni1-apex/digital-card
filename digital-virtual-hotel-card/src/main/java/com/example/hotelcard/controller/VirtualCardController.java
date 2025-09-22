@@ -1,7 +1,9 @@
 package com.example.hotelcard.controller;
 
 import com.example.hotelcard.model.VirtualCard;
+import com.example.hotelcard.service.QRCodeGenerator;
 import com.example.hotelcard.service.VirtualCardService;
+import com.google.zxing.WriterException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import com.google.zxing.WriterException; // make sure this import exists
+import java.io.IOException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
@@ -42,7 +50,9 @@ public class VirtualCardController {
                 .toList();
     }
 
-    // Validate a card
+    /*
+     *  Validate a card
+     */
     @PostMapping("/validate")
     public String validateCard(@RequestBody Map<String, String> request) {
         String sessionId = request.get("sessionId");
@@ -140,4 +150,22 @@ public class VirtualCardController {
     public String putMethodName(@PathVariable String sessionId, @RequestParam boolean suspend) {        
         return service.suspendCard(sessionId, suspend);
     }
+
+
+    @GetMapping("/{sessionId}/qrcode")
+    public ResponseEntity<byte[]> getCardQrCode(@PathVariable String sessionId) throws WriterException , IOException{
+         // Generate the URL for the guest card page
+        String qrText = "http://localhost:9090/card.html?sessionId=" + sessionId;
+
+        // Call the QRCodeGenerator utility to create the QR PNG bytes
+        byte[] qrImage =    QRCodeGenerator.generateQRCodeImage(qrText, 250, 250);
+
+        // Set response headers to tell browser/Postman this is an image
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+
+         // Return QR PNG as response
+        return ResponseEntity.ok().headers(headers).body(qrImage);
+    }
+    
 }
