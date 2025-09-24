@@ -25,26 +25,26 @@
     </div>
 
     <script>
-
         const params = new URLSearchParams(window.location.search);
         const sessionId = params.get("sessionId");
 
         if (!sessionId) {
-            document.getElementById("card-info").innerHMTL = `<div class="alert alert-danger"> Invalid link :No session ID provided.</div>`;
-        }
-        else {
-            fetch(`http://localhost:9090/api/cards/${sessionId}`)
+            document.getElementById("card-info").innerHTML =
+                `<div class="alert alert-danger">Invalid link: No session ID provided.</div>`;
+        } else {
+
+            fetch(`/api/cards/${sessionId}`)
                 .then(response => {
-                    if (!response.ok) throw new Error("card not found or unauthorized");
+                    if (!response.ok) throw new Error("Card not found or unauthorized");
                     return response.json();
                 })
                 .then(data => {
-                    // 3. Render card details 
-                    document.getElementById("card-into").innerHtml = `<ul class="list-group">
-            <li class="list-group-item"><b>Session ID:</b> ${data.sessionId}</li>
+                    document.getElementById("card-info").innerHTML = `
+            <ul class="list-group">
+              <li class="list-group-item"><b>Session ID:</b> ${data.sessionId}</li>
               <li class="list-group-item"><b>Valid From:</b> ${new Date(data.validFrom).toLocaleString()}</li>
               <li class="list-group-item"><b>Valid Till:</b> ${new Date(data.validTill).toLocaleString()}</li>
-              <li class="list-group-item"><b>Amenities Allowed:</b> ${data.amenitiesAllowed.join(", ")}</li>
+              <li class="list-group-item"><b>Amenities Allowed:</b> ${(data.amenitiesAllowed || []).join(", ")}</li>
               <li class="list-group-item"><b>Status:</b> 
                 <span class="badge ${data.suspended ? "bg-danger" : "bg-success"}">
                   ${data.suspended ? "Suspended" : "Active"}
@@ -52,13 +52,12 @@
               </li>
             </ul>
           `;
-        })
-        .catch(err=>{
-            document.getElementById("card-info").innerHtml=`<div class="alert alert-danger"> Error :${err.massage}</div>`;
-        });
-    
-    }
-
+                })
+                .catch(err => {
+                    document.getElementById("card-info").innerHTML =
+                        `<div class="alert alert-danger">Error: ${err.message}</div>`;
+                });
+        }
     </script>
 </body>
 
