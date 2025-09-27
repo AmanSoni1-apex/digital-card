@@ -19,11 +19,12 @@ public class VirtualCardService {
     }
 
     // Create a new card
-    public VirtualCard createCard(String userId, List<String> amenities) {
+    public VirtualCard createCard(String userId, String guestName ,List<String> amenities) {
 
         VirtualCard card = new VirtualCard();
         card.setSessionId(UUID.randomUUID().toString());
         card.setUserId(userId);
+        card.setGuestName(guestName);
         card.setValidFrom(LocalDateTime.now());
         card.setValidTill(LocalDateTime.now().plusDays(1)); // 1 day validity
         card.setAmenitiesAllowed(amenities);

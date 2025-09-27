@@ -5,6 +5,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.print.DocFlavor.STRING;
+
 @Entity
 @Table(name = "virtual_cards")
 @Data
@@ -17,6 +19,8 @@ public class VirtualCard {
     private String sessionId; // Primary key
 
     private String userId;
+
+    private String guestName;
 
     private LocalDateTime validFrom;
     private LocalDateTime validTill;
@@ -36,4 +40,14 @@ public class VirtualCard {
     public void setSuspended(Boolean suspended) {
         this.suspended = suspended;
     }
+
+    public String getGuestName(){
+        return guestName;
+    }
+
+    public void setGuestName(String guestName)
+    {
+        this.guestName=guestName;
+    }
+    
 }

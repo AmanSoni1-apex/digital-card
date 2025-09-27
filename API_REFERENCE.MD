@@ -13,6 +13,7 @@ json
 [
   {
     "phoneNumber": "9876543",
+    "guestName": "Aman Soni",
     "amenities": ["WiFi", "Breakfast", "Gym"]
   }
 ]

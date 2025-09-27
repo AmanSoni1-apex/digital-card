@@ -51,6 +51,7 @@
                     <div class="card-body">
                         <h5 class="mb-3 text-center">Guest ID: <span class="text-dark">${data.userId || "N/A"}</span></h5>
                         <div class="mb-3">
+                            <p><strong>Guest Name:</strong> <span id="guestName"></span></p>
                             <p class="mb-1"><b>Session ID:</b> ${data.sessionId}</p>
                             <p class="mb-1"><b>Valid From:</b> ${new Date(data.validFrom).toLocaleString()}</p>
                             <p class="mb-1"><b>Valid Till:</b> ${new Date(data.validTill).toLocaleString()}</p>
@@ -70,6 +71,7 @@
                         </div>
                     </div>
                 `;
+                document.getElementById("guestName").innerText = data.guestName || "N/A";
             })
             .catch(err => {
                 window.location.href = "card-error.html?reason=fetch-failed";

@@ -38,16 +38,18 @@ public class VirtualCardController {
 
     @PostMapping("/create")
     public List<VirtualCard> createCards(@RequestBody List<Map<String, Object>> requests) {
-        return requests.stream()
-                .map(req -> {
-                    String phoneNumber = (String) req.get("phoneNumber");
-                    List<String> amenities = ((List<?>) req.get("amenities"))
-                            .stream()
-                            .map(Object::toString)
-                            .toList();
-                    return service.createCard(phoneNumber, amenities);
-                })
+       return requests.stream()
+    .map(req -> {
+        String phoneNumber = (String) req.get("phoneNumber");
+        String guestName = (String) req.get("guestName");
+        List<String> amenities = ((List<?>) req.get("amenities"))
+                .stream()
+                .map(Object::toString)
                 .toList();
+        return service.createCard(phoneNumber, guestName, amenities);
+    })
+    .toList();
+
     }
 
     /*
