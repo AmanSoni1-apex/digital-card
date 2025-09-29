@@ -95,7 +95,7 @@ public class VirtualCardController {
     }
 
     // Get all cards (Admin)
-    @GetMapping("/all")
+    @GetMapping
     public List<VirtualCard> getAllCards() {
         return service.getAllCards();
     }
