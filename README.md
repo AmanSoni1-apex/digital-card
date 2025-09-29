@@ -11,18 +11,22 @@ A Spring Boot application for managing digital hotel key cards with QR code gene
 - Guest-friendly web interface
 - RESTful API
 
-## Quick Start
+### Quick Start
+Development
 
-### Development
-```bash
-npm run dev
-```
+Run the Spring Boot app using Maven:
+./mvnw spring-boot:run
 
-### Production Build
-```bash
-npm run build
-npm start
-```
+or if you have Maven installed globally:
+mvn spring-boot:run
+
+###Production Build
+
+Build a jar and run it:
+
+./mvnw clean package -DskipTests
+java -jar target/digital-card-0.0.1-SNAPSHOT.jar
+
 
 ## API Endpoints
 
