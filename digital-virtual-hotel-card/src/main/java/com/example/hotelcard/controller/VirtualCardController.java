@@ -157,7 +157,7 @@ public class VirtualCardController {
     @GetMapping("/{sessionId}/qrcode")
     public ResponseEntity<byte[]> getCardQrCode(@PathVariable String sessionId) throws WriterException , IOException{
          // Generate the URL for the guest card page
-        String qrText = "http://localhost:9090/card.html?sessionId=" + sessionId;
+        String qrText = "/card.html?sessionId=" + sessionId;
 
         // Call the QRCodeGenerator utility to create the QR PNG bytes
         byte[] qrImage =    QRCodeGenerator.generateQRCodeImage(qrText, 250, 250);

@@ -61,7 +61,7 @@
       ];
 
       try {
-        const response = await fetch("http://localhost:9090/api/cards/create", {
+        const response = await fetch("/api/cards/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)

@@ -25,9 +25,10 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
          */
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/cards/**", "/qr/**").permitAll() // Any request starting with /cards/ or /qr/ is open for everyone (no login required).
+                .requestMatchers("/api/cards/**", "/qr/**", "/", "/*.html", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll() // Public endpoints
                 .anyRequest().authenticated() // everything else needs login (Aunthetication)
             )
+            .headers(headers -> headers.frameOptions().disable()) // Allow H2 console iframe
             .httpBasic(Customizer.withDefaults()); 
         return http.build();
     }

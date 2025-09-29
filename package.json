@@ -1,0 +1,14 @@
+{
+  "name": "hotel-digital-card",
+  "version": "1.0.0",
+  "description": "Digital Virtual Hotel Card System",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd digital-virtual-hotel-card && ./mvnw clean package -DskipTests",
+    "start": "cd digital-virtual-hotel-card && java -jar target/digital-virtual-hotel-card-0.0.1-SNAPSHOT.jar",
+    "dev": "cd digital-virtual-hotel-card && ./mvnw spring-boot:run"
+  },
+  "keywords": ["hotel", "digital-card", "spring-boot", "qr-code"],
+  "author": "Hotel Management System",
+  "license": "MIT"
+}

@@ -1,0 +1,1 @@
+web: cd digital-virtual-hotel-card && java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/digital-virtual-hotel-card-0.0.1-SNAPSHOT.jar
