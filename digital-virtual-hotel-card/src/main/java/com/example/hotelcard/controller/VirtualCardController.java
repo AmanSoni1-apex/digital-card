@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-
 @RestController
 @RequestMapping("/api/cards")
 public class VirtualCardController {
@@ -30,6 +29,12 @@ public class VirtualCardController {
         this.service = service;
     }
 
+    // Get ALL cards
+    @GetMapping("/all")
+    public List<VirtualCard> getAllCards() {
+        return service.getAllCards();
+    }
+
     /*
      * Create a new card
      * C → Create
@@ -38,22 +43,22 @@ public class VirtualCardController {
 
     @PostMapping("/create")
     public List<VirtualCard> createCards(@RequestBody List<Map<String, Object>> requests) {
-       return requests.stream()
-    .map(req -> {
-        String phoneNumber = (String) req.get("phoneNumber");
-        String guestName = (String) req.get("guestName");
-        List<String> amenities = ((List<?>) req.get("amenities"))
-                .stream()
-                .map(Object::toString)
+        return requests.stream()
+                .map(req -> {
+                    String phoneNumber = (String) req.get("phoneNumber");
+                    String guestName = (String) req.get("guestName");
+                    List<String> amenities = ((List<?>) req.get("amenities"))
+                            .stream()
+                            .map(Object::toString)
+                            .toList();
+                    return service.createCard(phoneNumber, guestName, amenities);
+                })
                 .toList();
-        return service.createCard(phoneNumber, guestName, amenities);
-    })
-    .toList();
 
     }
 
     /*
-     *  Validate a card
+     * Validate a card
      */
     @PostMapping("/validate")
     public String validateCard(@RequestBody Map<String, String> request) {
@@ -75,29 +80,16 @@ public class VirtualCardController {
      * cards (admin view).
      */
 
+    // Get ONE card by sessionId
     @GetMapping("/{sessionId}")
     public ResponseEntity<?> getCard(@PathVariable String sessionId) {
         VirtualCard card = service.getCard(sessionId);
 
         if (card == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body("Card not found");
-    }
-
-        // return "SessionId: " + card.getSessionId() +
-        //         ", Phone: " + card.getUserId() +
-        //         ", Valid From: " + card.getValidFrom() +
-        //         ", Valid Till: " + card.getValidTill() +
-        //         ", Amenities: " + card.getAmenitiesAllowed()+ // or format manually if you want
-        //         ", suspended: "+card.getSuspended();
-
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Card not found");
+        }
         return ResponseEntity.ok(card);
-    }
-
-    // Get all cards (Admin)
-    @GetMapping
-    public List<VirtualCard> getAllCards() {
-        return service.getAllCards();
     }
 
     /*
@@ -149,25 +141,24 @@ public class VirtualCardController {
 
     // update the status of card "suspend/activate"
     @PutMapping("/{sessionId}/suspend")
-    public String putMethodName(@PathVariable String sessionId, @RequestParam boolean suspend) {        
+    public String putMethodName(@PathVariable String sessionId, @RequestParam boolean suspend) {
         return service.suspendCard(sessionId, suspend);
     }
 
-
     @GetMapping("/{sessionId}/qrcode")
-    public ResponseEntity<byte[]> getCardQrCode(@PathVariable String sessionId) throws WriterException , IOException{
-         // Generate the URL for the guest card page
+    public ResponseEntity<byte[]> getCardQrCode(@PathVariable String sessionId) throws WriterException, IOException {
+        // Generate the URL for the guest card page
         String qrText = "/card.html?sessionId=" + sessionId;
 
         // Call the QRCodeGenerator utility to create the QR PNG bytes
-        byte[] qrImage =    QRCodeGenerator.generateQRCodeImage(qrText, 250, 250);
+        byte[] qrImage = QRCodeGenerator.generateQRCodeImage(qrText, 250, 250);
 
         // Set response headers to tell browser/Postman this is an image
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
-         // Return QR PNG as response
+        // Return QR PNG as response
         return ResponseEntity.ok().headers(headers).body(qrImage);
     }
-    
+
 }

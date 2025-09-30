@@ -19,7 +19,7 @@ public class VirtualCardService {
     }
 
     // Create a new card
-    public VirtualCard createCard(String userId, String guestName ,List<String> amenities) {
+    public VirtualCard createCard(String userId, String guestName, List<String> amenities) {
 
         VirtualCard card = new VirtualCard();
         card.setSessionId(UUID.randomUUID().toString());
@@ -29,6 +29,17 @@ public class VirtualCardService {
         card.setValidTill(LocalDateTime.now().plusDays(1)); // 1 day validity
         card.setAmenitiesAllowed(amenities);
         return repository.save(card);
+    }
+
+    // get all cards
+    public List<VirtualCard> getAllCards() {
+        return repository.findAll();
+    }
+
+    // get a specific card 
+    public VirtualCard getCardBySessionId(String sessionId) {
+        return repository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + sessionId));
     }
 
     // Validate card
@@ -57,10 +68,6 @@ public class VirtualCardService {
         return repository.findById(sessionId).orElse(null);
     }
 
-    // Get all card's.
-    public List<VirtualCard> getAllCards() {
-        return repository.findAll();
-    }
 
     // Delete card.
     public String deleteCard(String sessionId) {
@@ -72,6 +79,8 @@ public class VirtualCardService {
         }
     }
 
+
+    // update a card 
     public VirtualCard updateCard(String sessionId, String phoneNumber, List<String> newAmenities,
             LocalDateTime newValidTill) {
         VirtualCard card = repository.findById(sessionId)
@@ -92,17 +101,15 @@ public class VirtualCardService {
         return repository.save(card); // Hibernate → UPDATE in DB
     }
 
-
-    public String suspendCard(String sessionId ,boolean suspend)
-    {
+    // suspend a card by the sessionId
+    public String suspendCard(String sessionId, boolean suspend) {
         VirtualCard card = repository.findById(sessionId).orElse(null);
-        if(card==null)
-        {
+        if (card == null) {
             return "card not found";
         }
         card.setSuspended(suspend);
         repository.save(card);
-        return suspend ?  "Card suspended successfully" : "Card reactivated successfully";
+        return suspend ? "Card suspended successfully" : "Card reactivated successfully";
     }
 
 }

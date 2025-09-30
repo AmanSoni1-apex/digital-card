@@ -15,19 +15,17 @@ import javax.print.DocFlavor.STRING;
 @Builder
 public class VirtualCard {
 
-    @Id
-    private String sessionId; // Primary key
+  @Id
+    private String sessionId;
 
     private String userId;
-
     private String guestName;
-
     private LocalDateTime validFrom;
     private LocalDateTime validTill;
 
-    @ElementCollection
-    @CollectionTable(name = "card_amenities", joinColumns = @JoinColumn(name = "session_id"))
-    @Column(name = "amenity")
+    // @ElementCollection
+    // @CollectionTable(name = "card_amenities", joinColumns = @JoinColumn(name = "session_id"))
+    // @Column(name = "amenity")
     private List<String> amenitiesAllowed;
 
     @Column(nullable = true)
