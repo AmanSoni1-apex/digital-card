@@ -1,4 +1,4 @@
-# Hotel Digital Card System
+# Digital Virtual Hotel Card
 
 A Spring Boot application for managing digital hotel key cards with QR code generation.
 
